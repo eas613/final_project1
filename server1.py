@@ -48,12 +48,18 @@ if not os.path.exists(csv_file):
 with open(csv_file, "r") as fd:
     for line in fd.readlines():
         fields = line.strip().split(",")
-
+        id = fields[2]
         if invalid_line(fields):
             print("Error, invalid fields.\n")
             continue
-
-        customer = Customer(*fields)
-        bst.add_customer(customer)
-        bst_id.add_customer(customer)
+        customer_to_update = bst_id.find_customer_by_id(id)
+        if not customer_to_update:
+            customer = Customer(*fields)
+            bst.add_customer(customer)
+            bst_id.add_customer(customer)
+        else:
+            debt = fields[4]
+            bst.remove_customer(customer_to_update)
+            customer_to_update.add_debt(debt)
+            bst.add_customer(customer_to_update)
     bst.print_ordered_by_debt()
