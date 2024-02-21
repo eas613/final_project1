@@ -36,5 +36,19 @@ class Customer_BST:
         self._print_ordered_by_debt(self._root)
         print("")
     
+    def find_max_debt(self,customer:Customer)->Customer|None:
+        if not customer:
+            return
+
+    def find_max_debt(self,customer:Customer)-> Customer|None:
+        if not customer:
+            return
+        if not customer._right_debt:
+            return customer
+        return self.find_max_debt(customer._right_debt)
+
+        
+
+
         
     
