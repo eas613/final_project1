@@ -51,3 +51,6 @@ with open(csv_file, "r") as fd:
         if invalid_line(fields):
             print("Error, invalid fields.\n")
             continue
+
+        customer = Customer(*fields)
+        bst.add_customer(customer)
