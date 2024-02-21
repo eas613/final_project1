@@ -54,3 +54,4 @@ with open(csv_file, "r") as fd:
 
         customer = Customer(*fields)
         bst.add_customer(customer)
+    bst.print_ordered_by_debt()
