@@ -35,3 +35,20 @@ class Customer_BST_id:
     def print_ordered_by_id(self):
         self._print_ordered_by_id(self._root)
         print("")
+
+    @property
+    def root(self):
+        return self._root 
+
+    def _find_customer(self,id:str,customer:Customer):
+        if not customer:
+            return False
+        if id == customer.id:
+            return customer
+        if id < customer.id:
+            return self._find_customer(id,customer._left_id)
+        if id > customer.id:
+            return self._find_customer(id,customer._right_id)
+    
+    def find_customer_by_id(self,id:str)->Customer:
+        return self._find_customer(id,self.root)
