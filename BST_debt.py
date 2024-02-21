@@ -25,7 +25,16 @@ class Customer_BST:
                     return
                 temp = temp._right_debt
         
-  
+    def _print_ordered_by_debt(self,customer):
+        if not customer:
+            return
+        self._print_ordered_by_debt(customer._right_debt)
+        print(customer)
+        self._print_ordered_by_debt(customer._left_debt)
+
+    def print_ordered_by_debt(self):
+        self._print_ordered_by_debt(self._root)
+        print("")
     
         
     
