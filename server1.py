@@ -33,6 +33,12 @@ def invalid_line(fields):
         return True
     return False
 
+def id_name_match(customer:Customer,first,last):
+    if customer.first != first or customer.last != last:
+        print (f"{customer}  Name doesn't match {first} {last}")
+        return False
+    return True
+
 if len(sys.argv) < 2 :
     print ("Error: missing csv file name.")
     quit()
@@ -58,6 +64,8 @@ with open(csv_file, "r") as fd:
             bst.add_customer(customer)
             bst_id.add_customer(customer)
         else:
+            if not id_name_match(customer_to_update,fields[0],fields[1]):
+                continue
             debt = fields[4]
             bst.remove_customer(customer_to_update)
             customer_to_update.add_debt(debt)
