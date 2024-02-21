@@ -24,3 +24,14 @@ class Customer_BST_id:
                     temp._right_id = customer
                     return
                 temp = temp._right_id
+  
+    def _print_ordered_by_id(self,customer):
+            if not customer:
+                return
+            self._print_ordered_by_id(customer._left_id)
+            print(customer)
+            self._print_ordered_by_id(customer._right_id)
+
+    def print_ordered_by_id(self):
+        self._print_ordered_by_id(self._root)
+        print("")
