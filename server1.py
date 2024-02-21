@@ -3,7 +3,7 @@ import os
 from customer1 import Customer
 from datetime import datetime
 from BST_debt import Customer_BST
-# from BST_id import Customer_BST_id
+from BST_id import Customer_BST_id
 
 def invalid_line(fields):
     if len(fields) != 6 :
@@ -38,6 +38,7 @@ if len(sys.argv) < 2 :
     quit()
 
 bst = Customer_BST()
+bst_id = Customer_BST_id()
 
 csv_file = sys.argv[1]
 if not os.path.exists(csv_file):
@@ -54,4 +55,5 @@ with open(csv_file, "r") as fd:
 
         customer = Customer(*fields)
         bst.add_customer(customer)
+        bst_id.add_customer(customer)
     bst.print_ordered_by_debt()
