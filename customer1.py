@@ -18,6 +18,14 @@ class Customer:
         return self._id
     
     @property
+    def first(self)->str:
+        return self._first
+    
+    @property
+    def last(self)->str:
+        return self._last
+    
+    @property
     def debt(self)->float:
         return self._debt
 
@@ -31,4 +39,12 @@ class Customer:
     def __str__(self) :
         return f"name:{self._first} {self._last} id:{self._id} phone:{self._phone} debt:{self._debt} date:{self._date}"
 
-    
+    def check_and_update_date(self,date:date)->bool:
+        if self._date > date :
+            print ("Error, previous debt is later date.")
+            return False
+        if self._date <= date:
+            print("updating current debt date.")
+            self._date = date
+            return True
+        
