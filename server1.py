@@ -66,6 +66,8 @@ with open(csv_file, "r") as fd:
         else:
             if not id_name_match(customer_to_update,fields[0],fields[1]):
                 continue
+            if not customer_to_update.check_and_update_date(fields[5]):
+                continue
             debt = fields[4]
             bst.remove_customer(customer_to_update)
             customer_to_update.add_debt(debt)
