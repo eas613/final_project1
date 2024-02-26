@@ -51,7 +51,7 @@ def select(query,bst):
             if not query[2][5:].isalpha():
                 print("invalid type , (not alphabetic)")
                 return
-            if not bst_id.find_by_name(query[1],query[2][5:]):
+            if not bst.find_by_name(query[1],query[2][5:]):
                 print (f"{query[1]} name {query[2][5:]} not found")
         else :
             print(f"{query[2]} is not recognized.")
