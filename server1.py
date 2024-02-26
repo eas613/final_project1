@@ -37,9 +37,9 @@ def select(query,bst):
     if len(query) < 2 :
         print("No parameters given .")
         return 
-    if query[1] == "first":
+    if query[1] == "first" or query[1] == "last":
         if len(query) < 3:
-            print("nothing entered after 'first', tip:name=...")
+            print("nothing entered after 'first'/'last', tip:name=...")
             return
         if len(query) > 4 :
             print ("invalid input , too many parameters, tip:name=...")
@@ -51,8 +51,8 @@ def select(query,bst):
             if not query[2][5:].isalpha():
                 print("invalid type , (not alphabetic)")
                 return
-            if not bst_id.find_first_name(query[2][5:]):
-                print (f"{query[2][5:]} not found")
+            if not bst_id.find_by_name(query[1],query[2][5:]):
+                print (f"{query[1]} name {query[2][5:]} not found")
         else :
             print(f"{query[2]} is not recognized.")
     else:
