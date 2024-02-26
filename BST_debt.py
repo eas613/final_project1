@@ -148,6 +148,42 @@ class Customer_BST:
     
     def find_by_phone(self,phone:str):
             return self._find_phone(phone,self.root)
+    
+    def find_by_debt(self,operator,debt:float):
+            return self._find_by_debt(operator,debt,self.root)
 
-        
+    def _find_by_debt(self,operator,debt:float,customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return
+        if operator == "!=":
+            self._find_by_debt(operator,debt,customer._right_debt,found)
+            if customer._debt != debt:
+                print(customer)
+                found.append(True)
+            self._find_by_debt(operator,debt,customer._left_debt,found)
+            return found
+        elif operator == "=":
+            self._find_by_debt(operator,debt,customer._right_debt,found)
+            if customer._debt == debt:
+                print(customer)
+                found.append(True)
+            self._find_by_debt(operator,debt,customer._left_debt,found)
+            return found
+        elif operator == "<":
+            self._find_by_debt(operator,debt,customer._right_debt,found)
+            if customer._debt < debt:
+                print(customer)
+                found.append(True)
+            self._find_by_debt(operator,debt,customer._left_debt,found)
+            return found
+        elif operator == ">":
+            self._find_by_debt(operator,debt,customer._right_debt,found)
+            if customer._debt > debt:
+                print(customer)
+                found.append(True)
+            self._find_by_debt(operator,debt,customer._left_debt,found)
+            return found
+    
     
