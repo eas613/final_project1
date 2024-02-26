@@ -52,3 +52,18 @@ class Customer_BST_id:
     
     def find_customer_by_id(self,id:str)->Customer:
         return self._find_customer(id,self.root)
+    
+    def _find_first_name(self,first:str,customer:Customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return found
+        if customer._first.lower() == first:
+            print(customer)
+            found.append(True)
+        self._find_first_name(first,customer._left_id,found)
+        self._find_first_name(first,customer._right_id,found)
+        return found
+        
+    def find_first_name(self,first:str):
+        return self._find_first_name(first,self.root)
