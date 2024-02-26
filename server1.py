@@ -33,30 +33,60 @@ def invalid_line(fields):
         return True
     return False
 
+def select_name(query,bst):
+    if len(query) < 3:
+            print("nothing entered after 'first'/'last', tip:name=...")
+            return
+    if len(query) > 3 :
+        print ("invalid input , too many parameters, tip:name=...")
+        return
+    if query[2].startswith("name="):
+        if len(query[2]) < 6:
+            print ("No name Entered.")
+            return
+        if not query[2][5:].isalpha():
+            print("invalid type , (not alphabetic)")
+            return
+        if not bst.find_by_name(query[1],query[2][5:]):
+            print (f"{query[1]} name {query[2][5:]} not found")
+            return
+    else :
+        print(f"{query[2]} is not recognized.")
+
+def select_id(query,bst):
+    if len(query) > 2 :
+        print ("invalid input , too many parameters, tip:id=... ")
+        return
+    if len(query[1]) != 12 or not query[1][3:].isdigit():
+        print ("id must be 9 digits.")
+        return
+    customer = bst_id.find_customer_by_id(query[1][3:]) 
+    if customer :
+        print (customer)
+    else:
+        print (f"id {query[1][3:]} not found")
+        return
+
 def select(query,bst):
     if len(query) < 2 :
         print("No parameters given .")
         return 
     if query[1] == "first" or query[1] == "last":
-        if len(query) < 3:
-            print("nothing entered after 'first'/'last', tip:name=...")
-            return
-        if len(query) > 4 :
-            print ("invalid input , too many parameters, tip:name=...")
-            return
-        if query[2].startswith("name="):
-            if len(query[2]) < 6:
-                print ("No name Entered.")
-                return
-            if not query[2][5:].isalpha():
-                print("invalid type , (not alphabetic)")
-                return
-            if not bst.find_by_name(query[1],query[2][5:]):
-                print (f"{query[1]} name {query[2][5:]} not found")
-        else :
-            print(f"{query[2]} is not recognized.")
+        select_name(query,bst)
+        return
+    if query[1].startswith("id="):
+        select_id(query,bst)
+        return
+    if query[1].startswith("phone="):
+        pass
+    if query[1].startswith("debt"):
+        pass
+    if query[1].startswith("date"):
+        pass
     else:
         print(f"{query[1]} is not recognized")
+        return 
+    
 
 def id_name_match(customer:Customer,first,last):
     if customer.first != first or customer.last != last:
