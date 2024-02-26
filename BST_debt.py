@@ -104,6 +104,35 @@ class Customer_BST:
         return
 
 
+    def _find_first_name(self,first:str,customer:Customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return found
+        self._find_first_name(first,customer._right_debt,found)
+        if customer._first.lower() == first:
+            print(customer)
+            found.append(True)
+        self._find_first_name(first,customer._left_debt,found)
+        return found
+    
+    def _find_last_name(self,last:str,customer:Customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return found
+        self._find_last_name(last,customer._right_debt,found)
+        if customer._last.lower() == last:
+            print(customer)
+            found.append(True)
+        self._find_last_name(last,customer._left_debt,found)
+        return found
+        
+    def find_by_name(self,attr,name:str):
+        if attr == "first":
+            return self._find_first_name(name,self.root)
+        if attr == "last":
+            return self._find_last_name(name,self.root)
 
 
         
