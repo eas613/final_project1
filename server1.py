@@ -33,6 +33,31 @@ def invalid_line(fields):
         return True
     return False
 
+def select(query,bst):
+    if len(query) < 2 :
+        print("No parameters given .")
+        return 
+    if query[1] == "first":
+        if len(query) < 3:
+            print("nothing entered after 'first', tip:name=...")
+            return
+        if len(query) > 4 :
+            print ("invalid input , too many parameters, tip:name=...")
+            return
+        if query[2].startswith("name="):
+            if len(query[2]) < 6:
+                print ("No name Entered.")
+                return
+            if not query[2][5:].isalpha():
+                print("invalid type , (not alphabetic)")
+                return
+            if not bst_id.find_first_name(query[2][5:]):
+                print (f"{query[2][5:]} not found")
+        else :
+            print(f"{query[2]} is not recognized.")
+    else:
+        print(f"{query[1]} is not recognized")
+
 def id_name_match(customer:Customer,first,last):
     if customer.first != first or customer.last != last:
         print (f"{customer}  Name doesn't match {first} {last}")
@@ -73,3 +98,16 @@ with open(csv_file, "r") as fd:
             customer_to_update.add_debt(debt)
             bst.add_customer(customer_to_update)
     bst.print_ordered_by_debt()
+
+while True:
+    query = input("==> ").strip().lower().split()
+    if not query:
+        print("Nothing entered.")
+    elif query[0] == "select":
+        select(query,bst)
+    # elif query[0] == "set":
+    #     update(query,bst)
+    elif query[0] == "quit":
+        break
+
+
