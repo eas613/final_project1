@@ -133,7 +133,21 @@ class Customer_BST:
             return self._find_first_name(name,self.root)
         if attr == "last":
             return self._find_last_name(name,self.root)
-
+        
+    def _find_phone(self,phone:str,customer:Customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return found
+        self._find_phone(phone,customer._right_debt,found)
+        if customer._phone == phone:
+            print(customer)
+            found.append(True)
+        self._find_phone(phone,customer._left_debt,found)
+        return found
+    
+    def find_by_phone(self,phone:str):
+            return self._find_phone(phone,self.root)
 
         
     
