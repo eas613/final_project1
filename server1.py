@@ -93,6 +93,22 @@ def select_debt(query):
         except ValueError:
             print("invalid input , enter debt amount. ")
             return
+
+def select_date(query):
+    if query[1][4] == "!":
+        try:
+            date = datetime.strptime(query[1][6:].strip(), "%d/%m/%Y").date()
+            return bst.find_by_date(query[1][4:6],date)
+        except ValueError:
+            print("Invalid input of date format.")
+            return 
+    else:
+        try:
+            date = datetime.strptime(query[1][5:].strip(), "%d/%m/%Y").date()
+            return bst.find_by_date(query[1][4],date)
+        except ValueError:
+            print("invalid input of date format. ")
+            return
     
 
 def select(query):
@@ -116,9 +132,13 @@ def select(query):
         if not select_debt(query):
             print("not found!")
         return
-        pass
     if query[1].startswith("date"):
-        pass
+        if len(query[1]) < 6 or not(query[1][4] in operators or query[1][4:6] == "!=" ) :
+            print("invalid operator.")
+            return
+        if not select_date(query):
+            print("not found!")
+        return
     else:
         print(f"{query[1]} is not recognized")
         return 
