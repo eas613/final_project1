@@ -1,5 +1,6 @@
 from customer1 import Customer
 from typing import Optional
+from datetime import datetime
 
 class Customer_BST:
     def __init__(self) -> None:
@@ -152,7 +153,7 @@ class Customer_BST:
     def find_by_debt(self,operator,debt:float):
             return self._find_by_debt(operator,debt,self.root)
 
-    def _find_by_debt(self,operator,debt:float,customer,found = None):
+    def _find_by_debt(self,operator,debt:float,customer:Customer,found = None):
         if found is None:
             found = []
         if not customer:
@@ -184,6 +185,43 @@ class Customer_BST:
                 print(customer)
                 found.append(True)
             self._find_by_debt(operator,debt,customer._left_debt,found)
+            return found
+    
+    def find_by_date(self,operator,date:datetime):
+            return self._find_by_date(operator,date,self.root)
+    
+    def _find_by_date(self,operator,date:datetime,customer:Customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return
+        if operator == "!=":
+            self._find_by_date(operator,date,customer._right_debt,found)
+            if customer._date != date:
+                print(customer)
+                found.append(True)
+            self._find_by_date(operator,date,customer._left_debt,found)
+            return found
+        elif operator == "=":
+            self._find_by_date(operator,date,customer._right_debt,found)
+            if customer._date == date:
+                print(customer)
+                found.append(True)
+            self._find_by_date(operator,date,customer._left_debt,found)
+            return found
+        elif operator == "<":
+            self._find_by_date(operator,date,customer._right_debt,found)
+            if customer._date < date:
+                print(customer)
+                found.append(True)
+            self._find_by_date(operator,date,customer._left_debt,found)
+            return found
+        elif operator == ">":
+            self._find_by_date(operator,date,customer._right_debt,found)
+            if customer._date > date:
+                print(customer)
+                found.append(True)
+            self._find_by_date(operator,date,customer._left_debt,found)
             return found
     
     
