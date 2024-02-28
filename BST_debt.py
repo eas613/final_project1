@@ -105,35 +105,61 @@ class Customer_BST:
         return
 
 
-    def _find_first_name(self,first:str,customer:Customer,found = None):
+    def _find_first_name(self,first:str,operator:str,customer:Customer,found = None):
         if found is None:
             found = []
         if not customer:
             return found
-        self._find_first_name(first,customer._right_debt,found)
-        if customer._first.lower() == first:
-            print(customer)
-            found.append(True)
-        self._find_first_name(first,customer._left_debt,found)
+        self._find_first_name(first,operator,customer._right_debt,found)
+        if operator == "=":
+            if customer._first.lower() == first:
+                print(customer)
+                found.append(True)
+        elif operator == "!=":
+            if customer._first.lower() !=  first:
+                print(customer)
+                found.append(True)
+        if operator == "<":
+            if customer._first.lower() < first:
+                print(customer)
+                found.append(True)
+        if operator == ">":
+            if customer._first.lower() > first:
+                print(customer)
+                found.append(True)
+        self._find_first_name(first,operator,customer._left_debt,found)
         return found
     
-    def _find_last_name(self,last:str,customer:Customer,found = None):
+    def _find_last_name(self,last:str,operator:str,customer:Customer,found = None):
         if found is None:
             found = []
         if not customer:
             return found
-        self._find_last_name(last,customer._right_debt,found)
-        if customer._last.lower() == last:
-            print(customer)
-            found.append(True)
-        self._find_last_name(last,customer._left_debt,found)
+        self._find_last_name(last,operator,customer._right_debt,found)
+        if operator == "=":
+            if customer._last.lower() == last:
+                print(customer)
+                found.append(True)
+        elif operator == "!=":
+            if customer._last.lower() !=  last:
+                print(customer)
+                found.append(True)
+        if operator == "<":
+            if customer._last.lower() < last:
+                print(customer)
+                found.append(True)
+        if operator == ">":
+            if customer._last.lower() > last:
+                print(customer)
+                found.append(True)  
+        self._find_last_name(last,operator,customer._left_debt,found)
         return found
         
-    def find_by_name(self,attr,name:str):
+    def find_by_name(self,attr:str,operator,name:str):
         if attr == "first":
-            return self._find_first_name(name,self.root)
+            return self._find_first_name(name,operator,self.root)
         if attr == "last":
-            return self._find_last_name(name,self.root)
+            return self._find_last_name(name,operator,self.root)
         
     def _find_phone(self,phone:str,customer:Customer,found = None):
         if found is None:
@@ -150,7 +176,7 @@ class Customer_BST:
     def find_by_phone(self,phone:str):
             return self._find_phone(phone,self.root)
     
-    def find_by_debt(self,operator,debt:float):
+    def find_by_debt(self,operator:str,debt:float):
             return self._find_by_debt(operator,debt,self.root)
 
     def _find_by_debt(self,operator,debt:float,customer:Customer,found = None):
@@ -158,6 +184,7 @@ class Customer_BST:
             found = []
         if not customer:
             return
+        operator = eval(operator)
         if operator == "!=":
             self._find_by_debt(operator,debt,customer._right_debt,found)
             if customer._debt != debt:
