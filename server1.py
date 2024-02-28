@@ -34,24 +34,20 @@ def invalid_line(fields):
     return False
 
 def select_name(query):
-    if len(query) < 3:
-            print("nothing entered after 'first'/'last', tip:name=...")
-            return
+    name_index = 5 if not query[2][4] == "!" else 6
     if len(query) > 3 :
         print ("invalid input , too many parameters, tip:name=...")
         return
-    if query[2].startswith("name="):
-        if len(query[2]) < 6:
-            print ("No name Entered.")
-            return
-        if not query[2][5:].isalpha():
-            print("invalid type , (not alphabetic)")
-            return
-        if not bst.find_by_name(query[1],query[2][5:]):
-            print (f"{query[1]} name {query[2][5:]} not found")
-            return
-    else :
-        print(f"{query[2]} is not recognized.")
+    if len(query[2]) < name_index+1:
+        print ("No name Entered.")
+        return
+    if not query[2][name_index:].isalpha():
+        print("invalid type , (not alphabetic)")
+        return
+    if not bst.find_by_name(query[1],query[2][4],query[2][name_index:]):
+        print (f"{query[1]} name {query[2][name_index:]} not found")
+        return
+    
 
 def select_id(query):
     if len(query) > 2 :
@@ -116,23 +112,32 @@ def select(query):
     if len(query) < 2 :
         print("No parameters given .")
         return 
-    if query[1] == "first" or query[1] == "last":
+    elif query[1] == "first" or query[1] == "last":
+        if len(query) < 3:
+            print("nothing entered after 'first'/'last', tip:name=...")
+            return
+        if not query[2].startswith("name"):
+            print (f"{query[2]} is unsupported. ")
+            return
+        if len(query[2]) < 5 or ((not query[2][4] in operators) and (len(query[2]) < 6 or not query[2][4:6] == "!=" )) :
+            print("Enter a valid operator.")
+            return
         select_name(query)
         return
-    if query[1].startswith("id="):
+    elif query[1].startswith("id="):
         select_id(query)
         return
-    if query[1].startswith("phone="):
+    elif query[1].startswith("phone="):
         select_phone(query)
         return
-    if query[1].startswith("debt"):
+    elif query[1].startswith("debt"):
         if len(query[1]) < 6 or not(query[1][4] in operators or query[1][4:6] == "!=" ) :
             print("invalid operator.")
             return
         if not select_debt(query):
             print("not found!")
         return
-    if query[1].startswith("date"):
+    elif query[1].startswith("date"):
         if len(query[1]) < 6 or not(query[1][4] in operators or query[1][4:6] == "!=" ) :
             print("invalid operator.")
             return
