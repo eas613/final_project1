@@ -140,7 +140,7 @@ class Customer_BST:
             if customer._last.lower() == last:
                 print(customer)
                 found.append(True)
-        elif operator == "!=":
+        elif operator == "!":
             if customer._last.lower() !=  last:
                 print(customer)
                 found.append(True)
@@ -160,21 +160,58 @@ class Customer_BST:
             return self._find_first_name(name,operator,self.root)
         if attr == "last":
             return self._find_last_name(name,operator,self.root)
-        
-    def _find_phone(self,phone:str,customer:Customer,found = None):
+
+    def _find_by_id(self,id:str,operator:str,customer:Customer,found = None):
         if found is None:
             found = []
         if not customer:
             return found
-        self._find_phone(phone,customer._right_debt,found)
-        if customer._phone == phone:
-            print(customer)
-            found.append(True)
-        self._find_phone(phone,customer._left_debt,found)
+        self._find_by_id(id,operator,customer._right_debt,found)
+        if operator == "!":
+            if customer._id !=  id:
+                print(customer)
+                found.append(True)
+        if operator == "<":
+            if customer._id < id:
+                print(customer)
+                found.append(True)
+        if operator == ">":
+            if customer._id > id:
+                print(customer)
+                found.append(True)  
+        self._find_by_id(id,operator,customer._left_debt,found)
         return found
-    
-    def find_by_phone(self,phone:str):
-            return self._find_phone(phone,self.root)
+  
+    def find_by_id(self,operator:str,id:str):
+            return self._find_by_id(id,operator,self.root)
+
+    def _find_by_phone(self,phone:str,operator:str,customer:Customer,found = None):
+        if found is None:
+            found = []
+        if not customer:
+            return found
+        self._find_by_phone(phone,operator,customer._right_debt,found)
+        if operator == "=":
+            if customer._phone ==  phone:
+                print(customer)
+                found.append(True)
+        if operator == "!":
+            if customer._phone !=  phone:
+                print(customer)
+                found.append(True)
+        if operator == "<":
+            if customer._phone < phone:
+                print(customer)
+                found.append(True)
+        if operator == ">":
+            if customer._phone > phone:
+                print(customer)
+                found.append(True)  
+        self._find_by_phone(phone,operator,customer._left_debt,found)
+        return found
+  
+    def find_by_phone(self,operator:str,phone:str):
+            return self._find_by_phone(phone,operator,self.root)
     
     def find_by_debt(self,operator:str,debt:float):
             return self._find_by_debt(operator,debt,self.root)
