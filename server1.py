@@ -34,10 +34,10 @@ def invalid_line(fields):
     return False
 
 def select_name(query):
-    name_index = 5 if not query[2][4] == "!" else 6
     if len(query) > 3 :
         print ("invalid input , too many parameters, tip:name=...")
         return
+    name_index = 5 if not query[2][4] == "!" else 6
     if len(query[2]) < name_index+1:
         print ("No name Entered.")
         return
@@ -53,25 +53,33 @@ def select_id(query):
     if len(query) > 2 :
         print ("invalid input , too many parameters, tip:id=... ")
         return
-    if len(query[1]) != 12 or not query[1][3:].isdigit():
+    id_index = 3 if not query[1][2] == "!" else 4
+    if len(query[1]) != (id_index + 9 )or not query[1][id_index:].isdigit():
         print ("id must be 9 digits.")
         return
-    customer = bst_id.find_customer_by_id(query[1][3:]) 
-    if customer :
-        print (customer)
+    if query[1][2] == "=":
+        customer = bst_id.find_customer_by_id(query[1][id_index:]) 
+        if customer :
+            print (customer)
+        else:
+            print (f"id {query[1][id_index:]} not found")
+        return
+    elif bst.find_by_id(query[1][2],query[1][id_index:]):
+        return
     else:
-        print (f"id {query[1][3:]} not found")
+        print (f"id {query[1][id_index:]} not found")
         return
 
 def select_phone(query):
     if len(query) > 2 :
         print ("invalid input , too many parameters, tip:phone=... ")
         return
-    if len(query[1]) != 16 or not query[1][6:].isdigit():
+    phone_index = 6 if not query[1][5] == "!" else 7
+    if len(query[1]) != (10 + phone_index) or not query[1][phone_index:].isdigit():
         print ("Phone must be 10 digits.")
         return
-    if not bst.find_by_phone(query[1][6:]):
-        print (f"{query[1][6:]} phone number not found") 
+    if not bst.find_by_phone(query[1][5],query[1][phone_index:]):
+        print (f"{query[1][phone_index:]} phone number not found") 
         return
 
 def select_debt(query):
@@ -124,10 +132,13 @@ def select(query):
             return
         select_name(query)
         return
-    elif query[1].startswith("id="):
+    elif query[1].startswith("id"):
+        if (len(query[1]) < 3 or ((not query[1][2] in operators)) and (len(query[1]) < 4 or not query[1][2:4] == "!=" )) :
+            print("Enter a valid operator.")
+            return
         select_id(query)
         return
-    elif query[1].startswith("phone="):
+    elif query[1].startswith("phone"):
         select_phone(query)
         return
     elif query[1].startswith("debt"):
@@ -196,8 +207,8 @@ while True:
         print("Nothing entered.")
     elif query[0] == "select":
         select(query)
-    # elif query[0] == "set":
-    #     update(query,bst)
+    elif query[0] == "set":
+        update(query,bst)
     elif query[0] == "quit":
         break
 
