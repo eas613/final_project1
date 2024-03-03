@@ -245,7 +245,7 @@ def select(query):
         return response ,False
 
 def keys_valid(line):
-    valid_keys =[['set', 'first', 'name='], ['last', 'name='], ['id='], ['phone='], ['dept='], ['date=']]
+    valid_keys =[['set', 'first', 'name='], ['last', 'name='], ['id='], ['phone='], ['debt='], ['date=']]
     if len(valid_keys) > len(line):
         response ="missing fields. "
         return response, False
