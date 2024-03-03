@@ -25,7 +25,24 @@ class Customer_BST:
                     temp._right_debt = customer
                     return
                 temp = temp._right_debt
-        
+    
+    def _get_all_customers(self,customer,found = None):   
+        if found is None:
+            found=[]
+        if not customer:
+            return found 
+        self._get_all_customers(customer._right_debt,found)
+        found.append(customer)
+        self._get_all_customers(customer._left_debt,found)
+        return found
+
+            
+    def get_all_customers(self): 
+        return self._get_all_customers(self._root)
+    def print_ordered_by_debt(self):
+        self._print_ordered_by_debt(self._root)
+        print("") 
+           
     def _print_ordered_by_debt(self,customer):
         if not customer:
             return
@@ -109,51 +126,43 @@ class Customer_BST:
         if found is None:
             found = []
         if not customer:
-            return found
+            return found, bool(found)
         self._find_first_name(first,operator,customer._right_debt,found)
         if operator == "=":
             if customer._first.lower() == first:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         elif operator == "!=":
             if customer._first.lower() !=  first:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == "<":
             if customer._first.lower() < first:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == ">":
             if customer._first.lower() > first:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         self._find_first_name(first,operator,customer._left_debt,found)
-        return found
+        return found ,bool(found)
     
     def _find_last_name(self,last:str,operator:str,customer:Customer,found = None):
         if found is None:
             found = []
         if not customer:
-            return found
+            return found ,bool(found)
         self._find_last_name(last,operator,customer._right_debt,found)
         if operator == "=":
             if customer._last.lower() == last:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         elif operator == "!":
             if customer._last.lower() !=  last:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == "<":
             if customer._last.lower() < last:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == ">":
             if customer._last.lower() > last:
-                print(customer)
-                found.append(True)  
+                found.append(customer)  
         self._find_last_name(last,operator,customer._left_debt,found)
-        return found
+        return found  ,bool(found)
         
     def find_by_name(self,attr:str,operator,name:str):
         if attr == "first":
@@ -165,22 +174,19 @@ class Customer_BST:
         if found is None:
             found = []
         if not customer:
-            return found
+            return found ,bool(found)
         self._find_by_id(id,operator,customer._right_debt,found)
         if operator == "!":
             if customer._id !=  id:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == "<":
             if customer._id < id:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == ">":
             if customer._id > id:
-                print(customer)
-                found.append(True)  
+                found.append(customer)  
         self._find_by_id(id,operator,customer._left_debt,found)
-        return found
+        return found , bool(found)
   
     def find_by_id(self,operator:str,id:str):
             return self._find_by_id(id,operator,self.root)
@@ -189,26 +195,22 @@ class Customer_BST:
         if found is None:
             found = []
         if not customer:
-            return found
+            return found , bool(found)
         self._find_by_phone(phone,operator,customer._right_debt,found)
         if operator == "=":
             if customer._phone ==  phone:
-                print(customer)
-                found.append(True)
+                found.append(customer)  
         if operator == "!":
             if customer._phone !=  phone:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == "<":
             if customer._phone < phone:
-                print(customer)
-                found.append(True)
+                found.append(customer)
         if operator == ">":
             if customer._phone > phone:
-                print(customer)
-                found.append(True)  
+                found.append(customer)  
         self._find_by_phone(phone,operator,customer._left_debt,found)
-        return found
+        return found ,bool(found)
   
     def find_by_phone(self,operator:str,phone:str):
             return self._find_by_phone(phone,operator,self.root)
@@ -220,36 +222,22 @@ class Customer_BST:
         if found is None:
             found = []
         if not customer:
-            return
-        operator = eval(operator)
+            return found ,bool(found)
+        self._find_by_debt(operator,debt,customer._right_debt,found)
         if operator == "!=":
-            self._find_by_debt(operator,debt,customer._right_debt,found)
             if customer._debt != debt:
-                print(customer)
-                found.append(True)
-            self._find_by_debt(operator,debt,customer._left_debt,found)
-            return found
+                found.append(customer)
         elif operator == "=":
-            self._find_by_debt(operator,debt,customer._right_debt,found)
             if customer._debt == debt:
-                print(customer)
-                found.append(True)
-            self._find_by_debt(operator,debt,customer._left_debt,found)
-            return found
+                found.append(customer)
         elif operator == "<":
-            self._find_by_debt(operator,debt,customer._right_debt,found)
             if customer._debt < debt:
-                print(customer)
-                found.append(True)
-            self._find_by_debt(operator,debt,customer._left_debt,found)
-            return found
+                found.append(customer)
         elif operator == ">":
-            self._find_by_debt(operator,debt,customer._right_debt,found)
             if customer._debt > debt:
-                print(customer)
-                found.append(True)
-            self._find_by_debt(operator,debt,customer._left_debt,found)
-            return found
+                found.append(customer)
+        self._find_by_debt(operator,debt,customer._left_debt,found)
+        return found ,bool(found)
     
     def find_by_date(self,operator,date:datetime):
             return self._find_by_date(operator,date,self.root)
@@ -258,34 +246,21 @@ class Customer_BST:
         if found is None:
             found = []
         if not customer:
-            return
+            return found ,bool(found)
+        self._find_by_date(operator,date,customer._right_debt,found)
         if operator == "!=":
-            self._find_by_date(operator,date,customer._right_debt,found)
             if customer._date != date:
-                print(customer)
-                found.append(True)
-            self._find_by_date(operator,date,customer._left_debt,found)
-            return found
+                found.append(customer)
         elif operator == "=":
-            self._find_by_date(operator,date,customer._right_debt,found)
             if customer._date == date:
-                print(customer)
-                found.append(True)
-            self._find_by_date(operator,date,customer._left_debt,found)
-            return found
+                found.append(customer)
         elif operator == "<":
-            self._find_by_date(operator,date,customer._right_debt,found)
             if customer._date < date:
-                print(customer)
-                found.append(True)
-            self._find_by_date(operator,date,customer._left_debt,found)
-            return found
+                found.append(customer)
         elif operator == ">":
-            self._find_by_date(operator,date,customer._right_debt,found)
             if customer._date > date:
-                print(customer)
-                found.append(True)
-            self._find_by_date(operator,date,customer._left_debt,found)
-            return found
+                found.append(customer)
+        self._find_by_date(operator,date,customer._left_debt,found)
+        return found,bool(found)
     
     
