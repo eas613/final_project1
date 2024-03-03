@@ -42,15 +42,15 @@ class Customer_BST_id:
 
     def _find_customer(self,id:str,customer:Customer):
         if not customer:
-            return False
+            return f"{id} not found ",False
         if id == customer.id:
-            return customer
+            return customer ,True
         if id < customer.id:
             return self._find_customer(id,customer._left_id)
         if id > customer.id:
             return self._find_customer(id,customer._right_id)
     
-    def find_customer_by_id(self,id:str)->Customer:
+    def find_customer_by_id(self,id:str)->tuple[Customer|str,bool]:
         return self._find_customer(id,self.root)
     
     def _find_first_name(self,first:str,customer:Customer,found = None):
