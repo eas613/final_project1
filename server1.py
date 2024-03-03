@@ -33,6 +33,26 @@ def invalid_line(fields):
         return True
     return False
 
+def add_customer(csv_line):
+    id = csv_line[2]
+    if invalid_line(csv_line):
+        print("Error, invalid csv_line.\n")
+        return
+    customer_to_update = bst_id.find_customer_by_id(id)
+    if not customer_to_update:
+        customer = Customer(*csv_line)
+        bst.add_customer(customer)
+        bst_id.add_customer(customer)
+    else:
+        if not id_name_match(customer_to_update,csv_line[0],csv_line[1]):
+            return
+        if not customer_to_update.check_and_update_date(csv_line[5]):
+            return
+        debt = csv_line[4]
+        bst.remove_customer(customer_to_update)
+        customer_to_update.add_debt(debt)
+        bst.add_customer(customer_to_update)
+    
 def select_name(query):
     if len(query) > 3 :
         print ("invalid input , too many parameters, tip:name=...")
@@ -158,6 +178,33 @@ def select(query):
     else:
         print(f"{query[1]} is not recognized")
         return 
+
+def keys_valid(line):
+    valid_keys =[['set', 'first', 'name='], ['last', 'name='], ['id='], ['phone='], ['dept='], ['date=']]
+    if len(valid_keys) > len(line):
+        print("missing fields. ")
+        return False
+    if len(valid_keys) < len(line):
+        print("Too many fields. ")
+        return False
+    csv_line = []
+    for i in range(len(valid_keys)):
+        line[i] = line[i].strip().split()
+        attr = line[i][-1].split("=")[-1]
+        if not attr:
+            print (f"missing info. ")
+        csv_line.append(attr) 
+    for i in range(len(line)):
+        line[i][-1]=line[i][-1][:(line[i][-1].find(csv_line[i]))]
+    if not line == valid_keys:
+        print ("invalid line.")
+        return
+    return csv_line
+
+def update(line):
+    csv_line=keys_valid(line)
+    if csv_line:
+        add_customer(csv_line)
     
 
 def id_name_match(customer:Customer,first,last):
@@ -165,51 +212,39 @@ def id_name_match(customer:Customer,first,last):
         print (f"{customer}  Name doesn't match {first} {last}")
         return False
     return True
+if __name__ == "main":
+    if len(sys.argv) < 2 :
+        print ("Error: missing csv file name.")
+        quit()
 
-if len(sys.argv) < 2 :
-    print ("Error: missing csv file name.")
-    quit()
+    bst = Customer_BST()
+    bst_id = Customer_BST_id()
 
-bst = Customer_BST()
-bst_id = Customer_BST_id()
+    csv_file = sys.argv[1]
+    if not os.path.exists(csv_file):
+        with open(csv_file, "w"):
+            pass
 
-csv_file = sys.argv[1]
-if not os.path.exists(csv_file):
-    with open(csv_file, "w"):
-        pass
+    with open(csv_file, "r") as fd:
+        for line in fd.readlines():
+            csv_line = line.strip().split(",")
+            add_customer(csv_line)
+            
+        bst.print_ordered_by_debt()
 
-with open(csv_file, "r") as fd:
-    for line in fd.readlines():
-        fields = line.strip().split(",")
-        id = fields[2]
-        if invalid_line(fields):
-            print("Error, invalid fields.\n")
-            continue
-        customer_to_update = bst_id.find_customer_by_id(id)
-        if not customer_to_update:
-            customer = Customer(*fields)
-            bst.add_customer(customer)
-            bst_id.add_customer(customer)
-        else:
-            if not id_name_match(customer_to_update,fields[0],fields[1]):
-                continue
-            if not customer_to_update.check_and_update_date(fields[5]):
-                continue
-            debt = fields[4]
-            bst.remove_customer(customer_to_update)
-            customer_to_update.add_debt(debt)
-            bst.add_customer(customer_to_update)
-    bst.print_ordered_by_debt()
-
-while True:
-    query = input("==> ").strip().lower().split()
-    if not query:
-        print("Nothing entered.")
-    elif query[0] == "select":
-        select(query)
-    elif query[0] == "set":
-        update(query,bst)
-    elif query[0] == "quit":
-        break
+    while True:
+        query = input("==> ").strip().lower()
+        if not query:
+            print("Nothing entered.")
+        elif query.startswith("select"):
+            query =query.strip().lower().split()
+            select(query)
+        elif query.startswith("set"):
+            query = query.strip().split(",")
+            update(query)
+        elif query == "print":
+            bst.print_ordered_by_debt()
+        elif query == "quit":
+            break
 
 
