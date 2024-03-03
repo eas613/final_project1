@@ -39,12 +39,16 @@ class Customer:
     def __str__(self) :
         return f"name:{self._first} {self._last} id:{self._id} phone:{self._phone} debt:{self._debt} date:{self._date}"
 
-    def check_and_update_date(self,date:date)->bool:
+    def check_and_update_date(self,date:date)->tuple[str,bool]:
         if self._date > date :
-            print ("Error, previous debt is later date.")
-            return False
+            response ="Error, previous debt is later date."
+            return response , False
         if self._date <= date:
-            print("updating current debt date.")
+            response = "updating current debt date."
             self._date = date
-            return True
+            return response,True
         
+    def update_phone(self,phone):
+        self._phone = phone
+
+
